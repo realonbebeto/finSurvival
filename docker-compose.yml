@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  postgres:
+    container_name: pg_db
+    image: postgres
+    hostname: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "${DATABASE_USERNAME}"
+      POSTGRES_PASSWORD: "${DATABASE_PASSWORD}"
+    volumes:
+      - "${HOST_VOLUME}:${CONTAINER_VOLUME}"
+    restart: unless-stopped
+    networks:
+      - datanet
+
+  pgadmin:
+    container_name: pg_ui
+    image: dpage/pgadmin4
+    depends_on:
+      - postgres
+    ports:
+      - "8080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "${PGADMIN_DEFAULT_EMAIL}"
+      PGADMIN_DEFAULT_PASSWORD: "${PGADMIN_DEFAULT_PASSWORD}"
+    restart: unless-stopped
+    networks:
+      - datanet
+
+networks:
+  datanet:
+
+volumes:
+  postgres-data:
