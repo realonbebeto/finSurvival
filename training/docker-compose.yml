@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+  mlflow_ui:
+    container_name: mlflow_server
+    image: mlflow_server
+    restart: unless-stopped
+    build:
+      context: ./mlfow
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    command: mlflow server --backend-store-uri postgresql://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:5432/${DATABASE_NAME_ML} --default-artifact-root ${GCS_BUCKET}/artifacts --serve-artifacts --artifacts-destination ${GCS_BUCKET}/artifacts --host 0.0.0.0 --port 5000
