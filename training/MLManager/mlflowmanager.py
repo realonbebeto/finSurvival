@@ -62,7 +62,7 @@ def getRunBySortMetric(client, experiment_id: str):
     Searchs the runs in an experiment and returns the run with the highest metric
     """
     rev_run = client.search_runs(
-        experiment_id, order_by=["metrics.c_index DESC"])[0]
+        experiment_id, order_by=["metrics.c_index DESC", "metrics.ibs ASC", "metrics.rmse ASC"])[0]
     return rev_run
 
 
@@ -163,7 +163,6 @@ def buildModel(exp_info: dict, tr_data: dict, te_data: dict, rev_run):
     experiment_id = fetchExperimentID(exp_info, client)
 
     param_grid = rev_run.to_dictionary()['data']['params']
-    trees = int(rev_run.to_dictionary()['data']['trees'])
 
     kind = rev_run.data.tags['classification_kind']
     output_kind = classificationKind(kind)
@@ -198,6 +197,7 @@ def buildModel(exp_info: dict, tr_data: dict, te_data: dict, rev_run):
         _tr_data['X'] = data_pipe.fit_transform(tr_data['X'])
 
         # Initialize and fit model
+        trees = param_grid.pop('trees')
         clf = output_kind(num_trees=trees)
         clf.fit(**_tr_data, **param_grid)
 
@@ -206,13 +206,13 @@ def buildModel(exp_info: dict, tr_data: dict, te_data: dict, rev_run):
         (c_index, ibs, results) = evalMetrics(clf, _te_data)
 
         joblib.dump(data_pipe, f"{path}/../tmp/data_pipe.sav")
-
-        mlflow.log_artifact(f"{path}/../tmp/data_pipe.sav")
-        # Saving a model depends on csf or rsf
         save_model(clf, f"{path}/../tmp/model.zip")
-        mlflow.log_artifact(f"{path}/../tmp/model.sav")
-        mlflow.sklearn.log_model(clf, "model")
+
+        # Log Params, Artifact and Results
+        mlflow.log_artifact(f"{path}/../tmp/data_pipe.sav")
+        mlflow.log_artifact(f"{path}/../tmp/model.zip")
         mlflow.log_params(param_grid)
+        mlflow.log_param("trees", trees)
         mlflow.log_dict(results, "results.json")
 
         # logging metrics
