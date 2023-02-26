@@ -9,7 +9,7 @@ from database import Base
 
 
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True, nullable=False)
     email = Column(EmailType, nullable=False, unique=True)

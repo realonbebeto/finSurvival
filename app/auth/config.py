@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     postgres_database: str
     secret_key: str
     algorithm: str
-    token_expire: int
+    token_expire_time: int
 
     # class Config:
     #     env_file = "/home/main/Documents/kazispaces/dsrc/py/finlytik-app/app/auth/.env"

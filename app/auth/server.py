@@ -4,7 +4,7 @@ from typing import *
 from models import User, Base
 import uvicorn
 from database import get_db
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from jose import JWSError, jwt
@@ -119,7 +119,7 @@ def signIn(user_cred: OAuth2PasswordRequestForm = Depends(), db: Session = Depen
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@app.post("/", status_code=status.HTTP_201_CREATED, response_model=UserResponse)
+@app.post("/register", status_code=status.HTTP_201_CREATED, response_model=UserResponse)
 async def createUser(user: CreateUser, db: Session = Depends(get_db)):
 
     # Hash the pssword
@@ -137,6 +137,11 @@ async def createUser(user: CreateUser, db: Session = Depends(get_db)):
     db.refresh(new_user)
 
     return new_user
+
+@app.post("/validate")
+def validate(request: Request):
+    pass
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=3000)

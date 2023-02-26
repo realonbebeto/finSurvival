@@ -1,12 +1,57 @@
 version: '3.7'
-services:
-  mlflow_ui:
-    container_name: mlflow_server
-    image: mlflow_server
+services:  
+  postgres:
+    container_name: pg
+    image: postgres
+    hostname: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "${DATABASE_USERNAME}"
+      POSTGRES_PASSWORD: "${DATABASE_PASSWORD}"
+    volumes:
+      - "${HOST_VOLUME}:${CONTAINER_VOLUME}"
+      - ./int.sh:/docker-entrypoint-initdb.d/init.sh
+      
     restart: unless-stopped
-    build:
-      context: ./mlfow
-      dockerfile: Dockerfile
+    networks:
+      datanet:
+        ipv4_address: 10.5.0.4
+
+  mlflow:
+    container_name: mlflow
+    image: realonbebeto/finlytik-mlflow
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_PATH: "${DATABASE_PATH}"
+      ARTIFACT_PATH: "${ARTIFACT_PATH}"
     ports:
       - "5000:5000"
-    command: mlflow server --backend-store-uri postgresql://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME_ML} --default-artifact-root ${GCS_BUCKET}/artifacts --serve-artifacts --artifacts-destination ${GCS_BUCKET}/artifacts --host 0.0.0.0 --port 5000
+    networks:
+      datanet:
+        ipv4_address: 10.5.0.6
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    depends_on:
+      - postgres
+    ports:
+      - "8080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "${PGADMIN_DEFAULT_EMAIL}"
+      PGADMIN_DEFAULT_PASSWORD: "${PGADMIN_DEFAULT_PASSWORD}"
+    restart: unless-stopped
+    networks:
+      datanet:
+        ipv4_address: 10.5.0.5
+
+networks:
+  datanet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/24
+          gateway: 10.5.0.1

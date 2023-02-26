@@ -5,15 +5,14 @@ metadata:
   labels:
     app: postgres
 spec:
-    type: LoadBalancer
+    type: NodePort
     selector:
       app: postgres
     ports:
     - name: postgres
       port: 5432
-      targetPort: 5432
-    externalIPs:
-    - 1.2.4.114
+      protocol: TCP
+      nodePort: 30032
 
 ---
 apiVersion: v1
