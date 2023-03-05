@@ -1,0 +1,17 @@
+**/__pycache__/
+*/__pycache__/
+__pycache__/
+mlruns/
+mlflow_repo/
+staging/
+prod/
+venv/
+penv/
+.pytest_cache/
+
+.env
+*.csv
+*.log
+*.sav
+*.zip
+

@@ -5,11 +5,12 @@ RUN apt-get update \
     build-essential \
     && pip install --no-cache-dir --upgrade pip
 
-WORKDIR /home/app
-COPY ./requirements.txt /home/app
-RUN pip install --no-cache-dir --requirement /home/app/requirements.txt
-COPY . /home/app
+WORKDIR /home/auth
+COPY ./requirements.txt /home/auth/
+RUN pip install --no-cache-dir --requirement /home/auth/requirements.txt
+COPY . /home/auth
+RUN alembic upgrade head
 
 EXPOSE 3000
 
-CMD ["python3", "server.py"]
+CMD ["sh", "-c", "uvicorn auth.main:app --port 3000"]
