@@ -62,7 +62,7 @@ def getRunBySortMetric(client, experiment_id: str):
     Searchs the runs in an experiment and returns the run with the highest metric
     """
     rev_run = client.search_runs(
-        experiment_id, order_by=["metrics.c_index DESC", "metrics.ibs ASC", "metrics.rmse ASC"])[0]
+        experiment_id, order_by=["metrics.rmse ASC", "metrics.c_index DESC", "metrics.ibs ASC"])[0]
     return rev_run
 
 
@@ -96,6 +96,8 @@ def experimentModel(exp_info, tr_data, te_data, param_grid, trees: int, kind: st
         tags = exp_info['tags']
         mlflow.set_tags(tags)
         mlflow.set_tag("classification_kind", kind)
+        mlflow.set_tag("model_name", exp_info['model_name'])
+
         # mlflow.set_tag("target_names", ' '.join(target_names))
 
         # Log python environment details
@@ -188,6 +190,8 @@ def buildModel(exp_info: dict, tr_data: dict, te_data: dict, rev_run):
         # Define and set custom tag
         tags = exp_info['tags']
         mlflow.set_tags(tags)
+        mlflow.set_tag("classification_kind", kind)
+        mlflow.set_tag("model_name", exp_info["model_name"])
 
         # create transformation pipeline
         data_pipe = data_pipe = Pipeline([('dv', DictVectorizer(sparse=False)),
@@ -255,9 +259,13 @@ def modelProduct(exp_info, tr_data, te_data):
         exp_run = compareRunProd(stage_run_metadata, prod_run_metadata)
 
         if exp_run:
+            # Updating the correct name of the model
+            exp_info['model_name'] = exp_run.data.tags['model_name']
             clf, built_run = buildModel(exp_info, tr_data, te_data, exp_run)
             updateProd(exp_info, client, built_run)
     except:
+        # Updating the correct name of the model
+        exp_info['model_name'] = latest_run.data.tags['model_name']
         clf, built_run = buildModel(exp_info, tr_data, te_data, latest_run)
         updateProd(exp_info, client, built_run)
 
@@ -271,3 +279,19 @@ def fetchModel(tracking_uri: str, model_name: str):
     model = mlflow.pyfunc.load_model(
         model_uri=version_info[0].source.replace(model_name, 'model'))
     return model
+
+
+def downloadModel(tracking_uri: str, model_name: str = None, search_prefix: str = "Finly") -> None:
+    mlflow.set_tracking_uri(tracking_uri)
+    client = MlflowClient(tracking_uri)
+    if model_name:
+        version_info = client.search_model_versions(f"name='{model_name}'")
+        run_id = version_info[0].run_id
+
+    else:
+        version_info = client.search_registered_models(
+            filter_string=f"name LIKE '{search_prefix}%'")
+        run_id = version_info[0].latest_versions[0].run_id
+
+    mlflow.artifacts.download_artifacts(
+        run_id=run_id, dst_path=f"{path}/../modelproduct /")
