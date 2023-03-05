@@ -9,7 +9,6 @@ WORKDIR /home/auth
 COPY ./requirements.txt /home/auth/
 RUN pip install --no-cache-dir --requirement /home/auth/requirements.txt
 COPY . /home/auth
-RUN alembic upgrade head
 
 EXPOSE 3000
 
