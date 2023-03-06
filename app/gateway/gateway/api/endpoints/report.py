@@ -27,7 +27,8 @@ def inference(*, profile_in: schemas.ProfileCreate,
 
     message = {
         "profile_id": str(profile.id),
-        "username": profile.email
+        "username": profile.email,
+        "processed": False
     }
 
     try:
@@ -40,11 +41,11 @@ def inference(*, profile_in: schemas.ProfileCreate,
         raise HTTPException(status_code=500, detail=e)
 
 
-@router.get("/infer", response_model=List[schemas.Profile])
-def viewReports(db: Depends(deps.getDb),
-                skip: int = 0,
-                limit: int = 100,
-                current_user: models.User = Depends(deps.getCurrentActiveUser)):
+@router.get("/reports", response_model=List[schemas.Profile])
+def view_reports(db: Session = Depends(deps.getDb),
+                 skip: int = 0,
+                 limit: int = 100,
+                 current_user: models.User = Depends(deps.getCurrentActiveUser)):
 
     profiles = crud.profile.getMultiByEmail(
         db, email=current_user.email, skip=skip, limit=limit)

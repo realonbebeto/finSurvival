@@ -1,0 +1,12 @@
+**/__pycache__/
+*/__pycache__/
+__pycache__/
+mlruns/
+mlflow_repo/
+staging/
+models/
+prod/
+venv/
+penv/
+manifests/
+scripts/

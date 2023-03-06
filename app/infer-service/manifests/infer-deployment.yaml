@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: infer-deployment
+  labels:
+    app: infer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: infer
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+  template:
+    metadata:
+      labels:
+        app: infer
+    spec:
+      containers:
+        - name: finlytik-model
+          image: realonbebeto/finlytik-model
+          ports:
+          - containerPort: 3200
+          envFrom:
+            - configMapRef:
+                name: infer-configmap
+            - secretRef:
+                name: infer-secret
+        - name: finlytik-consumer
+          image: realonbebeto/finlytik-consumer
+          ports:
+          - containerPort: 3220
+          envFrom:
+            - configMapRef:
+                name: infer-configmap
+            - secretRef:
+                name: infer-secret
