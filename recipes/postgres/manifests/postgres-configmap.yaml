@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-configmap
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: main
+  POSTGRES_USER: main
+  PGADMIN_DEFAULT_EMAIL: main@main.com
+  PGADMIN_PORT: "80"
