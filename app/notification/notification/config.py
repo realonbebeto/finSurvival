@@ -5,14 +5,9 @@ from pydantic import BaseSettings, PostgresDsn, validator
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Finlytik"
-    GMAIL_ADDRESS: str
-    GMAIL_PASSWORD: str
-    MODEL_ADDRESS: str
-    PROFILE_QUEUE: str
-
-    class Config:
-        case_sensitive = True
-        env_file = "/home/main/Documents/kazispaces/dsrc/py/finlytik-app/app/auth/.env"
+    GMAIL_ADDRESS: str = "nyamwamu.omayio@students.jkuat.ac.ke"
+    GMAIL_PASSWORD: str = "Hw8P7Ku0B6^gn@O9y"
+    PROFILE_QUEUE: str = 'profile'
 
 
 settings = Settings()

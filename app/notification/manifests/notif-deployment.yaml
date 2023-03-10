@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notif-deployment
+  labels:
+    app: notif
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notif
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+  template:
+    metadata:
+      labels:
+        app: notif
+    spec:
+      containers:
+        - name: finlytik-notif
+          image: realonbebeto/finlytik-notif
+          ports:
+          - containerPort: 3500
+          envFrom:
+            - configMapRef:
+                name: notif-configmap
+            - secretRef:
+                name: notif-secret

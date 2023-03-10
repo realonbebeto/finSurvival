@@ -6,10 +6,10 @@ RUN apt-get update \
     && pip install --no-cache-dir --upgrade pip
 
 WORKDIR /home/notification
-COPY ./requirements.txt /home/notification//
+COPY ./requirements.txt /home/notification/
 RUN pip install --no-cache-dir --requirement /home/notification/requirements.txt
 COPY . /home/notification/
 
-EXPOSE 3000
+EXPOSE 3500
 
-CMD CMD ["python3", "notification/consumer.py"]
+CMD ["python3", "-m", "notification.main"]

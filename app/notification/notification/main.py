@@ -2,6 +2,7 @@ import pika
 import sys
 import os
 from notification import email
+from notification.config import settings
 
 
 def main():
@@ -18,7 +19,7 @@ def main():
             ch.basic_ack(delivery_tag=method.delivery_tag)
 
     channel.basic_consume(
-        queue=os.environ.get("PROFILE_QUEUE"), on_message_callback=callback
+        queue=settings.PROFILE_QUEUE, on_message_callback=callback
     )
 
     print("Waiting for messages. To exit press CTRL+C")

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notif-configmap
+data:
+  PROJECT_NAME: "Finlytik"
+  GMAIL_ADDRESS: "nyamwamu.omayio@students.jkuat.ac.ke"
+  GMAIL_PASSWORD: "#####"
+  PROFILE_QUEUE: 'profile'
+  DETAIL_QUEUE: "detail"
