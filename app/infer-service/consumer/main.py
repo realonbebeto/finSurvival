@@ -1,15 +1,13 @@
 import pika
 import sys
 import os
+from sqlalchemy.orm import Session
 from consumer import deps, crud
 from consumer import report
+from consumer.core.config import settings
 
 
-def main():
-
-    # Connect to db
-    db = deps.getDb()
-
+def main(db: Session = next(deps.getDb())):
     # rabbitmq connection
     connection = pika.BlockingConnection(
         pika.ConnectionParameters(host="rabbitmq"))
@@ -23,7 +21,7 @@ def main():
             ch.basic_ack(delivery_tag=method.delivery_tag)
 
     channel.basic_consume(
-        queue=os.environ.get("PROFILE_QUEUE"), on_message_callback=callback
+        queue=settings.DETAIL_QUEUE, on_message_callback=callback
     )
 
     print("Waiting for messages. To exit press CTRL+C")

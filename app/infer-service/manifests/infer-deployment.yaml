@@ -29,7 +29,7 @@ spec:
             - secretRef:
                 name: infer-secret
         - name: finlytik-consumer
-          image: realonbebeto/finlytik-consumer
+          image: realonbebeto/finlytik-infer
           ports:
           - containerPort: 3220
           envFrom:

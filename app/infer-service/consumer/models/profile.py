@@ -33,11 +33,10 @@ class Profile(Base):
     payment_behaviour = Column(String, nullable=False, unique=False)
     monthly_balance = Column(Float, nullable=False, unique=False)
     # other attributes
-    times = Column(ARRAY, nullable=True, unique=False)
-    hazard_score = Column(ARRAY, nullable=True, unique=False)
-    risk_score = Column(ARRAY, nullable=True, unique=False)
-    survival_score = Column(ARRAY, nullable=True, unique=False)
-    password = Column(String, nullable=False)
+    times = Column(ARRAY(Integer), nullable=True, unique=False)
+    hazard_score = Column(ARRAY(Integer), nullable=True, unique=False)
+    risk_score = Column(ARRAY(Integer), nullable=True, unique=False)
+    survival_score = Column(ARRAY(Integer), nullable=True, unique=False)
     created_at = Column(TIMESTAMP(timezone=True),
                         server_default=text("now()"), nullable=False)
     updated_at = Column(TIMESTAMP(timezone=True),

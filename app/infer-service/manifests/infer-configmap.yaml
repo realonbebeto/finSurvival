@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: infer-configmap
+data:
+  AUTH_SVC_ADDRESS: "auth:3000/auth/v1"
+  ALGORITHM: "HS256"
+  PROJECT_NAME: "Finlytik"
+  POSTGRES_HOST: host.minikube.internal
+  POSTGRES_USER: main
+  POSTGRES_DB: finlytik
+  POSTGRES_PORT: "5432"
+  SQLALCHEMY_DATABASE_URI: "postgresql://main:main123@host.minikube.internal:5432/finlytik"
+  MODEL_ADDRESS: "localhost"
+  DETAIL_QUEUE: "detail"
+  PROFILE_QUEUE: "profile"

@@ -24,12 +24,13 @@ class Settings(BaseSettings):
             path=f"/{values.get('POSTGRES_DB') or ''}",
         )
 
-    MODEL_ADDRESS: str
-    PROFILE_QUEUE: str
+    MODEL_ADDRESS: str = "localhost"
+    DETAIL_QUEUE: str = "detail"
+    PROFILE_QUEUE: str = "profile"
 
-    class Config:
-        case_sensitive = True
-        env_file = "/home/main/Documents/kazispaces/dsrc/py/finlytik-app/app/auth/.env"
+    # class Config:
+    #     case_sensitive = True
+    #     env_file = "/home/main/Documents/kazispaces/dsrc/py/finlytik-app/app/infer-service/.env"
 
 
 settings = Settings()

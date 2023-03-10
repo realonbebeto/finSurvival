@@ -7,15 +7,11 @@ spec:
     app: infer
   type: ClusterIP
   ports:
-    - name: http
-      port: 80
-      targetPort: 80
+    - name: infer-model
+      port: 3200
+      targetPort: 3200
       protocol: TCP
-    - name: https
-      port: 443
+    - name: infer-consumer
+      port: 3220
       protocol: TCP
-      targetPort: 443
-    - name: postgres-link
-      port: 5432
-      targetPort: 5432
-      protocol: TCP 
+      targetPort: 3220
