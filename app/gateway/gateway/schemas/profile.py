@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import List, Optional
 
 from pydantic import BaseModel, EmailStr
 
@@ -42,9 +42,9 @@ class ProfileInDBBase(ProfileBase):
         orm_mode = True
 
 
-class ProfileReport(BaseModel):
+class ProfileReport(ProfileBase):
     id: Optional[int] = None
-    email: EmailStr
+    times: Optional[List[int]]
     hazard_score: Optional[List[int]]
     risk_score: Optional[List[int]]
     survival_score: Optional[List[int]]

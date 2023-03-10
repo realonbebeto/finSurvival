@@ -5,11 +5,11 @@ RUN apt-get update \
     build-essential \
     && pip install --no-cache-dir --upgrade pip
 
-WORKDIR /home/auth
-COPY ./requirements.txt /home/auth/
-RUN pip install --no-cache-dir --requirement /home/auth/requirements.txt
-COPY . /home/auth
+WORKDIR /home/gateway
+COPY ./requirements.txt /home/gateway/
+RUN pip install --no-cache-dir --requirement /home/gateway/requirements.txt
+COPY . /home/gateway/
 
 EXPOSE 3100
 
-CMD ["sh", "-c", "uvicorn gateway.main:app --port 3100"]
+CMD ["sh", "-c", "uvicorn gateway.main:app --host 0.0.0.0 --port 3100"]

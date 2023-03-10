@@ -11,19 +11,16 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
     # SERVER_HOST: AnyHttpUrl
     ALGORITHM: str = "HS256"
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = [
-        "http://localhost:3100",
-        "http://localhost",
-        "http://localhost:8080",
-    ]
+    BACKEND_CORS_ORIGINS: List[Any] = [
+        "*", "http://finlytik.com", "https://finlytik.com"]
 
-    @validator("BACKEND_CORS_ORIGINS", pre=True)
-    def assembleCorsOrigins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
-        if isinstance(v, str) and not v.startswith("["):
-            return [i.strip() for i in v.split(",")]
-        elif isinstance(v, (list, str)):
-            return v
-        raise ValueError(v)
+    # @validator("BACKEND_CORS_ORIGINS", pre=True)
+    # def assembleCorsOrigins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
+    #     if isinstance(v, str) and not v.startswith("["):
+    #         return [i.strip() for i in v.split(",")]
+    #     elif isinstance(v, (list, str)):
+    #         return v
+    #     raise ValueError(v)
 
     PROJECT_NAME: str = "Finlytik"
     # SENTRY_DSN: Optional[HttpUrl] = None
@@ -53,14 +50,12 @@ class Settings(BaseSettings):
             path=f"/{values.get('POSTGRES_DB') or ''}",
         )
 
-    FIRST_SUPERUSER: EmailStr = "projobs254@gmail.com"
-    FIRST_SUPERUSER_PASSWORD: str = "main123"
     USERS_OPEN_REGISTRATION: bool = False
-    # EMAIL_TEST_USER: EmailStr
+    AUTH_SVC_ADDRESS: str
 
-    class Config:
-        case_sensitive = True
-        env_file = "/home/main/Documents/kazispaces/dsrc/py/finlytik-app/app/auth/.env"
+    # class Config:
+    #     case_sensitive = True
+    #     env_file = "/home/main/Documents/kazispaces/dsrc/py/finlytik-app/app/gateway/.env"
 
 
 settings = Settings()

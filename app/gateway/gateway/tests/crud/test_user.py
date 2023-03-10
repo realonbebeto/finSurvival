@@ -1,10 +1,9 @@
-from fastapi.encoders import jsonable_encoder
-from sqlalchemy.orm import Session
-
 from auth import crud
 from auth.core.security import verifyPassword
 from auth.schemas.user import UserCreate, UserUpdate
 from auth.tests.utils.utils import randomEmail, randomLowerString
+from fastapi.encoders import jsonable_encoder
+from sqlalchemy.orm import Session
 
 
 def testCreateUser(db: Session) -> None:

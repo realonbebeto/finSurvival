@@ -1,8 +1,7 @@
 from typing import Dict
 
-from fastapi.testclient import TestClient
-
 from auth.core.config import settings
+from fastapi.testclient import TestClient
 
 
 def testGetAccessToken(client: TestClient) -> None:

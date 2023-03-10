@@ -18,5 +18,4 @@ class User(Base):
     created_at = Column(
         TIMESTAMP(timezone=True), server_default=text("now()"), nullable=False
     )
-    updated_at = Column(TIMESTAMP(timezone=True),
-                        onupdate=datetime.now(timezone.utc))
+    updated_at = Column(TIMESTAMP(timezone=True), onupdate=datetime.now(timezone.utc))

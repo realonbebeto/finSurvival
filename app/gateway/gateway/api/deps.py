@@ -11,9 +11,7 @@ from gateway.core import security
 from gateway.core.config import settings
 from gateway.db.session import SessionLocal
 
-reusable_oauth2 = OAuth2PasswordBearer(
-    tokenUrl=f"{settings.API_V1_STR}/login"
-)
+reusable_oauth2 = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/login")
 
 
 def getDb() -> Generator:
