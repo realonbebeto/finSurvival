@@ -4,15 +4,16 @@ metadata:
   name: auth-configmap
 data:
   API_V1_STR: "/auth/v1"
+  SECRET_KEY: "realonbebeto"
   ACCESS_TOKEN_EXPIRE_MINUTES: "10080"
   ALGORITHM: "HS256"
-  BACKEND_CORS_ORIGINS: '["http://localhost:3000", "http://localhost", "http://localhost:8080",]'
   PROJECT_NAME: "Finlytik"
   POSTGRES_HOST: host.minikube.internal
   POSTGRES_USER: main
   POSTGRES_DB: finlytik
   POSTGRES_PORT: "5432"
-  SQLALCHEMY_DATABASE_URI: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
+  SQLALCHEMY_DATABASE_URI: "postgresql://main:main123@host.minikube.internal:5432/finlytik"
   FIRST_SUPERUSER: "projobs254@gmail.com"
-  USERS_OPEN_REGISTRATION: False
+  USERS_OPEN_REGISTRATION: "True"
+
 

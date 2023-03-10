@@ -12,4 +12,4 @@ COPY . /home/auth
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "uvicorn auth.main:app --port 3000"]
+CMD ["sh", "-c", "uvicorn auth.main:app --host 0.0.0.0 --port 3000"]
