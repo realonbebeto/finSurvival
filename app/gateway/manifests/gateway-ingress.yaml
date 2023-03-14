@@ -16,6 +16,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: gateway
+                name: frontend
                 port:
-                  number: 3100
+                  number: 3600
