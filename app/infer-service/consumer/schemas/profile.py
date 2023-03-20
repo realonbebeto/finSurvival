@@ -18,7 +18,7 @@ class ProfileModel(BaseModel):
     outstanding_debt: float
     credit_utilization_ratio: float
     credit_history_age: float
-    payment_of_min_amount: float
+    payment_of_min_amount: str
     total_emi_per_month: float
     amount_invested_monthly: float
     payment_behaviour: str
@@ -41,7 +41,7 @@ class ProfileBase(BaseModel):
     outstanding_debt: float
     credit_utilization_ratio: float
     credit_history_age: float
-    payment_of_min_amount: float
+    payment_of_min_amount: str
     total_emi_per_month: float
     amount_invested_monthly: float
     payment_behaviour: str
@@ -54,10 +54,10 @@ class ProfileCreate(ProfileBase):
 
 # Properties to receive via API on update
 class ProfileUpdate(ProfileBase):
-    times: Optional[List[int]]
-    hazard_score: Optional[List[int]]
-    risk_score: Optional[List[int]]
-    survival_score: Optional[List[int]]
+    times: Optional[List[float]]
+    hazard_score: Optional[List[float]]
+    risk_score: Optional[List[float]]
+    survival_score: Optional[List[float]]
 
 
 class ProfileInDBBase(ProfileBase):
@@ -70,10 +70,10 @@ class ProfileInDBBase(ProfileBase):
 class ProfileReport(BaseModel):
     id: Optional[int] = None
     email: EmailStr
-    times: Optional[List[int]]
-    hazard_score: Optional[List[int]]
-    risk_score: Optional[List[int]]
-    survival_score: Optional[List[int]]
+    times: Optional[List[float]]
+    hazard_score: Optional[List[float]]
+    risk_score: Optional[List[float]]
+    survival_score: Optional[List[float]]
 
     class Config:
         orm_mode = True
