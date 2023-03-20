@@ -1,8 +1,8 @@
-"""profile + user
+"""v1
 
-Revision ID: 0f7d72b6bcfc
+Revision ID: e09c060309f1
 Revises: 
-Create Date: 2023-03-07 18:05:35.776411
+Create Date: 2023-03-20 18:50:00.055573
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ import sqlalchemy_utils
 
 
 # revision identifiers, used by Alembic.
-revision = '0f7d72b6bcfc'
+revision = 'e09c060309f1'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -36,15 +36,15 @@ def upgrade() -> None:
     sa.Column('outstanding_debt', sa.Float(), nullable=False),
     sa.Column('credit_utilization_ratio', sa.Float(), nullable=False),
     sa.Column('credit_history_age', sa.Float(), nullable=False),
-    sa.Column('payment_of_min_amount', sa.Float(), nullable=False),
+    sa.Column('payment_of_min_amount', sa.String(), nullable=False),
     sa.Column('total_emi_per_month', sa.Float(), nullable=False),
     sa.Column('amount_invested_monthly', sa.Float(), nullable=False),
     sa.Column('payment_behaviour', sa.String(), nullable=False),
     sa.Column('monthly_balance', sa.Float(), nullable=False),
-    sa.Column('times', sa.ARRAY(sa.Integer()), nullable=True),
-    sa.Column('hazard_score', sa.ARRAY(sa.Integer()), nullable=True),
-    sa.Column('risk_score', sa.ARRAY(sa.Integer()), nullable=True),
-    sa.Column('survival_score', sa.ARRAY(sa.Integer()), nullable=True),
+    sa.Column('times', sa.ARRAY(sa.Float()), nullable=True),
+    sa.Column('hazard_score', sa.ARRAY(sa.Float()), nullable=True),
+    sa.Column('risk_score', sa.ARRAY(sa.Float()), nullable=True),
+    sa.Column('survival_score', sa.ARRAY(sa.Float()), nullable=True),
     sa.Column('created_at', sa.TIMESTAMP(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.TIMESTAMP(timezone=True), nullable=True),
     sa.PrimaryKeyConstraint('id')
