@@ -51,15 +51,15 @@ def start(message, db, crud, channel):
         crud.profile.update(db, db_obj=current_profile, obj_in=profile_in)
         message["processed"] = True
 
-    try:
-        channel.basic_publish(
-            exchange="",
-            routing_key=settings.PROFILE_QUEUE,
-            body=json.dumps(message),
-            properties=pika.BasicProperties(
-                delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
-            ),
-        )
-    except Exception as err:
-        raise HTTPException(
-            status_code=500, detail="Error with publishing message on the RabbitMQ profile queue")
+        try:
+            channel.basic_publish(
+                exchange="",
+                routing_key=settings.PROFILE_QUEUE,
+                body=json.dumps(message),
+                properties=pika.BasicProperties(
+                    delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
+                ),
+            )
+        except Exception as err:
+            raise HTTPException(
+                status_code=500, detail="Error with publishing message on the RabbitMQ profile queue")
