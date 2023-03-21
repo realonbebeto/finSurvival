@@ -44,10 +44,10 @@ class ProfileInDBBase(ProfileBase):
 
 class ProfileReport(ProfileBase):
     id: Optional[int] = None
-    times: Optional[List[int]]
-    hazard_score: Optional[List[int]]
-    risk_score: Optional[List[int]]
-    survival_score: Optional[List[int]]
+    times: Optional[List[float]]
+    hazard_score: Optional[List[float]]
+    risk_score: Optional[List[float]]
+    survival_score: Optional[List[float]]
 
     class Config:
         orm_mode = True

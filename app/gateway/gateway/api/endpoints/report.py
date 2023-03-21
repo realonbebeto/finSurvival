@@ -14,20 +14,11 @@ connection = pika.BlockingConnection(pika.ConnectionParameters("rabbitmq"))
 channel = connection.channel()
 
 
-@router.post("/infer")
-def inference(
-    *,
-    profile_in: schemas.ProfileCreate,
-    db: Session = Depends(deps.getDb),
-    current_user: models.User = Depends(deps.getCurrentActiveUser)
-):
-    current_user_data = jsonable_encoder(current_user)
-    profile_in.email = current_user_data['email']
-
+def detailUpload(db, profile, channel):
     try:
-        profile = crud.profile.create(db, obj_in=profile_in)
+        profile = crud.profile.create(db, obj_in=profile)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=e)
+        return 500, e
 
     message = {
         "profile_id": str(profile.id),
@@ -46,8 +37,24 @@ def inference(
         )
     except Exception as e:
         crud.profile.delete(db=db, id=profile.id)
-        raise HTTPException(
-            status_code=500, detail="Error with publishing message on the RabbitMQ detail queue")
+        return 500, e
+
+
+@router.post("/infer")
+def inference(
+    *,
+    profile_in: schemas.ProfileCreate,
+    db: Session = Depends(deps.getDb),
+    current_user: models.User = Depends(deps.getCurrentActiveUser)
+):
+    current_user_data = jsonable_encoder(current_user)
+    profile_in.email = current_user_data['email']
+
+    err = detailUpload(db, profile_in, channel)
+    if err:
+        return 500, err
+
+    return 200, "Success!",
 
 
 @router.get("/reports", response_model=List[schemas.ProfileReport])
