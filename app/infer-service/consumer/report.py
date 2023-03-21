@@ -57,9 +57,10 @@ def start(message, db, crud, channel):
                 routing_key=settings.PROFILE_QUEUE,
                 body=json.dumps(message),
                 properties=pika.BasicProperties(
-                    delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
-                ),
+                    delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE),
             )
         except Exception as err:
-            raise HTTPException(
-                status_code=500, detail="Error with publishing message on the RabbitMQ profile queue")
+            return "Error with publishing message on the RabbitMQ profile queue"
+    else:
+        print(response.status_code, response.json())
+        return response.json()
