@@ -121,7 +121,6 @@ SecretStorage==2.3.1
 simplejson==3.16.0
 sip==4.19.21
 six==1.14.0
-sklearn==0.0
 smmap==5.0.0
 soupsieve==1.9.5
 SQLAlchemy==1.4.41
