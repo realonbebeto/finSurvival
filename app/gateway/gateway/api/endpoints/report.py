@@ -18,7 +18,7 @@ def detailUpload(db, profile, channel):
     try:
         profile = crud.profile.create(db, obj_in=profile)
     except Exception as e:
-        return 500, e
+        return "Not able to upload profile"
 
     message = {
         "profile_id": str(profile.id),
@@ -37,7 +37,7 @@ def detailUpload(db, profile, channel):
         )
     except Exception as e:
         crud.profile.delete(db=db, id=profile.id)
-        return 500, e
+        return "Not able to publish profile"
 
 
 @router.post("/infer")
