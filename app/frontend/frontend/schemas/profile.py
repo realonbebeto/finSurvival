@@ -18,7 +18,7 @@ class ProfileModel(BaseModel):
     outstanding_debt: float
     credit_utilization_ratio: float
     credit_history_age: float
-    payment_of_min_amount: float
+    payment_of_min_amount: str
     total_emi_per_month: float
     amount_invested_monthly: float
     payment_behaviour: str
