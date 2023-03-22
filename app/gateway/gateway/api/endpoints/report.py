@@ -10,8 +10,6 @@ from gateway import crud, models, schemas
 from gateway.api import deps
 
 router = APIRouter()
-connection = pika.BlockingConnection(pika.ConnectionParameters("rabbitmq"))
-channel = connection.channel()
 
 
 def detailUpload(db, profile, channel):
@@ -49,6 +47,10 @@ def inference(
 ):
     current_user_data = jsonable_encoder(current_user)
     profile_in.email = current_user_data['email']
+
+    # Rabbitmq connection
+    connection = pika.BlockingConnection(pika.ConnectionParameters("rabbitmq"))
+    channel = connection.channel()
 
     err = detailUpload(db, profile_in, channel)
     if err:
