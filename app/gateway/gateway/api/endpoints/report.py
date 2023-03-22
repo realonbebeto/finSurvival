@@ -18,7 +18,7 @@ def detailUpload(db, profile, channel):
     try:
         profile = crud.profile.create(db, obj_in=profile)
     except Exception as e:
-        return "Not able to upload profile"
+        return "Not able to upload detail to the db"
 
     message = {
         "profile_id": str(profile.id),
@@ -37,10 +37,12 @@ def detailUpload(db, profile, channel):
         )
     except Exception as e:
         crud.profile.delete(db=db, id=profile.id)
-        return "Not able to publish profile"
+        return "Not able to publish to the detail queue"
+    finally:
+        connection.close()
 
 
-@router.post("/infer")
+@router.post("/infer", response_model=schemas.ProfileCreate)
 def inference(
     *,
     profile_in: schemas.ProfileCreate,
@@ -52,9 +54,9 @@ def inference(
 
     err = detailUpload(db, profile_in, channel)
     if err:
-        return 500, err
+        raise HTTPException(status_code=500, detail=err)
 
-    return 200, "Success!",
+    return profile_in
 
 
 @router.get("/reports", response_model=List[schemas.ProfileReport])
