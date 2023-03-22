@@ -23,6 +23,6 @@ def notification(message):
         session.login(sender_address, sender_password)
         session.send_message(msg, sender_address, receiver_address)
         session.quit()
-        print("Mail Sent")
     except Exception as err:
-        return f"Error sending message to {message['profile_id']}"
+        print(f"Error sending message to {message['profile_id']}")
+        return err
