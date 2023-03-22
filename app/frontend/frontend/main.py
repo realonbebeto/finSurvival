@@ -137,7 +137,14 @@ def show_reports_page():
 
             list_df = [st.session_state['reports'][i]
                        for i in range(0, len(st.session_state['reports']))]
-            sub_data = list_df[data_chunk_choice()]
+            page = data_chunk_choice()
+            max_page = len(list_df)
+
+            if page > max_page:
+                sub_data = list_df[max_page-1]
+            else:
+                sub_data = list_df[page]
+
             col1, col2, col3 = st.columns([1, 3, 3])
             with col1:
                 if sub_data['risk_score']:
