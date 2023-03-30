@@ -11,7 +11,10 @@ def main():
         pika.ConnectionParameters(host="rabbitmq"))
     channel = connection.channel()
 
+    err = None
+
     def callback(ch, method, properties, body):
+        global err
         err = email.notification(body)
         if err:
             ch.basic_nack(delivery_tag=method.delivery_tag)
@@ -21,7 +24,7 @@ def main():
     channel.basic_consume(
         queue=settings.PROFILE_QUEUE, on_message_callback=callback
     )
-
+    print(err)
     print("Waiting for messages. To exit press CTRL+C")
 
     channel.start_consuming()
